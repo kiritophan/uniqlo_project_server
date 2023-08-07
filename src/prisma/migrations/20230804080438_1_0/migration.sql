@@ -3,6 +3,7 @@ CREATE TABLE `users` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `email` CHAR(100) NOT NULL,
     `email_confirm` BOOLEAN NOT NULL DEFAULT false,
+    `user_name` CHAR(30) NOT NULL,
     `first_name` CHAR(30) NOT NULL,
     `last_name` CHAR(30) NOT NULL,
     `password` CHAR(255) NOT NULL,
@@ -13,5 +14,6 @@ CREATE TABLE `users` (
 
     UNIQUE INDEX `users_id_key`(`id`),
     UNIQUE INDEX `users_email_key`(`email`),
+    UNIQUE INDEX `users_user_name_key`(`user_name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
