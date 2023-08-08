@@ -33,5 +33,34 @@ module.exports = {
             }
         }
     },
+    readMany: async function (status = undefined) {
+        try {
+            let products = await prisma.products.findMany({
+                where: {
+                    category: {
+                        deleted: false,
+                    }
+                },
+                include: {
+                    category: true,
+                    product_options: {
+                        include: {
+                            product_option_pictures: true,
+                        }
+                    }
+                }
+            });
 
+            return {
+                status: true,
+                message: "Lấy danh sách sản phẩm thành công!",
+                data: products
+            };
+        } catch (err) {
+            return {
+                status: false,
+                message: "Lỗi không xác định"
+            };
+        }
+    },
 }

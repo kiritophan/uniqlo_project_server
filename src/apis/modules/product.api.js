@@ -3,6 +3,8 @@ const router = express.Router();
 
 import multer from "multer";
 
+import productController from "../../controllers/product.controller";
+
 const imgProductStorage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'public/images/products')
@@ -14,8 +16,10 @@ const imgProductStorage = multer.diskStorage({
 
 const productUpload = multer({ storage: imgProductStorage })
 
-import productController from "../../controllers/product.controller";
+
 router.post("/", productUpload.array('imgs'), productController.create)
+router.get("/", productController.readMany)
+
 
 module.exports = router;
 

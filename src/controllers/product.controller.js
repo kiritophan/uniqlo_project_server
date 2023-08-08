@@ -9,11 +9,8 @@ module.exports = {
         let avatarProcess = await uploadFileToStorage(req.files[0], "products", fs.readFileSync(req.files[0].path));
         productInforFormat.avatar = avatarProcess;
         fs.unlink(req.files[0].path, (err) => {
-
         })
         req.files.splice(0, 1);
-
-
         for (let i in productInforFormat.options) {
             productInforFormat.options[i].price = Number(productInforFormat.options[i].price);
             productInforFormat.options[i].stock = Number(productInforFormat.options[i].stock);
@@ -23,6 +20,7 @@ module.exports = {
                 fs.unlink(req.files[j].path, (err) => {
 
                 })
+                
             }
             req.files.splice(0, productInforFormat.options[i].pictures.length);
         }
@@ -60,5 +58,23 @@ module.exports = {
                 message: "Lỗi xử lý!"
             })
         }
-    }
+    },
+    readMany: async function (req, res) {
+        try {
+            let result = await productModel.readMany(req.query.status);
+            if (result.status) {
+                return res.status(200).json({
+                    message: result.message,
+                    data: result.data
+                })
+            }
+            return res.status(500).json({
+                message: result.message
+            })
+        } catch (err) {
+            return res.status(500).json({
+                message: "Lỗi không xác định!"
+            })
+        }
+    },
 }
