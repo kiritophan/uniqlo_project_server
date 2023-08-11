@@ -1,6 +1,7 @@
 import productModel from '../models/product.model';
 import { uploadFileToStorage } from '../firebase';
 import fs from 'fs';
+
 module.exports = {
     create: async function (req, res) {
         let productInforFormat = JSON.parse(req.body.product_infor);
@@ -72,6 +73,22 @@ module.exports = {
                 message: result.message
             })
         } catch (err) {
+            return res.status(500).json({
+                message: "Lỗi không xác định!"
+            })
+        }
+    },
+    findById: async function (req, res) {
+        try {
+            let result = await productModel.findById(parseInt(req.params.id));
+
+            return res.status(200).json({
+                message: result.message,
+                data: result.data
+            })
+
+        } catch (err) {
+            console.log("err", err);
             return res.status(500).json({
                 message: "Lỗi không xác định!"
             })

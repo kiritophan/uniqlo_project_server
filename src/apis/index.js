@@ -9,4 +9,4 @@ import adminMiddleware from '../middlewares/admin.middleware';
 import adminApi from './admin';
 router.use('/admin', adminMiddleware.checkAdmin, adminApi);
 
-export default router;
+export default router;  

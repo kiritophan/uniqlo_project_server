@@ -19,6 +19,7 @@ const productUpload = multer({ storage: imgProductStorage })
 
 router.post("/", productUpload.array('imgs'), productController.create)
 router.get("/", productController.readMany)
+router.get("/:id", productController.findById);
 
 
 module.exports = router;
