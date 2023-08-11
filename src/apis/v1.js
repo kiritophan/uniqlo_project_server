@@ -1,17 +1,15 @@
 /* Create Express Router */
-import express from 'express'
-const router = express.Router()
+import express from 'express';
+const router = express.Router();
 
-import userModule from './modules/user'
-router.use('/users', userModule)
+import userModule from './modules/user';
+import categoryModule from './modules/category.api';
+import productModule from './modules/product.api';
+import purchaseModule from './modules/purchase.api';
 
-import categoryApi from '../apis/modules/category.api';
-router.use('/categories', categoryApi)
-
-import productApi from '../apis/modules/product.api';
-router.use('/products', productApi)
-
-import purchaseModule from '../apis/modules/purchase.api';
+router.use('/users', userModule);
+router.use('/categories', categoryModule);
+router.use('/products', productModule);
 router.use('/purchase', purchaseModule);
 
 export default router;

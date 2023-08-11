@@ -1,66 +1,39 @@
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
 
-module.exports = {
-    create: async function (dataObj) {
+export default {
+    findAllProducts: async () => {
         try {
-            const product = await prisma.products.create({
-                data: {
-                    ...dataObj.productInfor,
-                    product_options: {
-                        create: dataObj.productOptions
-                    },
-                },
-                include: {
-                    product_options: true,
-                    product_options: {
-                        include: {
-                            product_option_pictures: true,
-                        }
-                    }
-                },
-            })
+            let products = await prisma.products.findMany()
             return {
                 status: true,
-                message: "Thêm sản phẩm thành công!",
-                data: product
+                message: "get all product thanh cong",
+                data: products
             }
         } catch (err) {
-            console.log("err", err)
+            console.log("err", err);
+            return {
+                status: false,
+                message: "get all product that bai"
+            }
+        }
+    },
+    findByCategory: async function (category_id) {
+        try {
+            let products = await prisma.products.findMany({
+                where: {
+                    category_id: category_id
+                }
+            });
+            return {
+                message: "Get products successfully!",
+                data: products
+            }
+        } catch (err) {
             return {
                 status: false,
                 message: "Lỗi không xác định!"
             }
-        }
-    },
-    readMany: async function (status = undefined) {
-        try {
-            let products = await prisma.products.findMany({
-                where: {
-                    category: {
-                        deleted: false,
-                    }
-                },
-                include: {
-                    category: true,
-                    product_options: {
-                        include: {
-                            product_option_pictures: true,
-                        }
-                    }
-                }
-            });
-
-            return {
-                status: true,
-                message: "Lấy danh sách sản phẩm thành công!",
-                data: products
-            };
-        } catch (err) {
-            return {
-                status: false,
-                message: "Lỗi không xác định"
-            };
         }
     },
     findById: async function (id) {
@@ -75,6 +48,70 @@ module.exports = {
                 data: products
             }
         } catch (err) {
+            return {
+                status: false,
+                message: "Lỗi không xác định!"
+            }
+        }
+    },
+    findMany: async function () {
+        try {
+            let products = await prisma.products.findMany();
+            return {
+                status: true,
+                message: "san pham duoc tim thay!",
+                data: products
+            }
+        } catch (err) {
+            return {
+                status: false,
+                message: "lỗi!"
+            }
+        }
+    },
+    searchByName: async function (searchString) {
+        try {
+            let products = await prisma.products.findMany({
+                where: {
+                    OR: [
+                        {
+                            name: {
+                                contains: searchString,
+                            }
+                        },
+                        {
+                            des: {
+                                contains: searchString,
+                            },
+                        }
+                    ]
+                }
+            });
+            return {
+                status: true,
+                message: "Ket qua search",
+                data: products
+            }
+        } catch (err) {
+            console.log("err", err)
+            return {
+                status: false,
+                message: "lỗi!"
+            }
+        }
+    },
+    create: async function (newProduct) {
+        try {
+            const product = await prisma.products.create({
+                data: newProduct
+            })
+            return {
+                status: true,
+                message: "Thêm sản phẩm thành công!",
+                data: product
+            }
+        } catch (err) {
+            console.log("err", err)
             return {
                 status: false,
                 message: "Lỗi không xác định!"
