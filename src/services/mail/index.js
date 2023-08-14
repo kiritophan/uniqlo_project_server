@@ -22,9 +22,3 @@ export default {
         }
     }
 }
-
-// {
-//     to: "mieuteacher@gmail.com",
-//     subject: "Thử nghiệm send mail with node js aaaa",
-//     html: template
-// }
