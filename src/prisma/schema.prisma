@@ -71,12 +71,15 @@ model cart_details {
 
 model receipts {
     id              String            @id @default(uuid())
+    receipt_code    String
     user            users             @relation(fields: [user_id], references: [id])
     user_id         Int               @unique
     total           Int
     paid            Boolean
+    pay_mode        PayMode
     paid_time       DateTime
     create_at       DateTime
+    update_at       DateTime 
     receipt_details receipt_details[]
 }
 
@@ -88,4 +91,10 @@ model receipt_details {
     product_id Int
     quantity   Int
     des        String
+}
+
+enum PayMode {
+    CASH
+    ZALO
+    MOMO
 }
